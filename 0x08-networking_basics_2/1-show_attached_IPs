@@ -1,3 +1,16 @@
 #!/usr/bin/env bash
 # This script displays the IP addresses of the machine
-ip a | grep inet | awk '!/^[0-9]*: ?lo|link\/ether/ {print $2}' | grep '^[0-9]' | cut -d/ -f1
+interfaces=$(ip -o link | awk '/state UP/ {print $2}')
+
+# Loop over each interface
+for interface in $interfaces; do
+
+  # Get the IPv4 address for the interface
+  ip_address=$(ip -o addr show $interface | awk '/inet/ {print $2}')
+
+  # If the IP address is not the loopback address, print it
+  if [[ $ip_address != 127.0.0.1 ]]; then
+    echo $ip_address
+  fi
+
+done

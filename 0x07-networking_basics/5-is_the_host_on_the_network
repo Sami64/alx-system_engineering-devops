@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script pings and ip received as an argument 5 times.
+ping -c 5 "$1"
